@@ -2,6 +2,20 @@
 
 ### [2026-11-02 - bilgisayar adı public repoda yazılmadı]
 - **Yapılanlar & Kararlar:**
+  - PR #7 merge edildi ve v1.5.2 imzalı olarak yayınlandı; başarısız Kur artık görünür, güncelleme kutusu açılınca denetim hemen yapılıyor.
+  - Sürüm hattına kurulum logu ve hazır olma beklemesi eklendi. Daha önce görülen ara sıra kod 5 hatasının kök nedeni bulunamadı.
+  - Geçici test branch'leri silindi.
+- **Son Commit:** 642418d Merge pull request #8 from berkantshn/chore/release-1-5-2
+- **Aktif Branch:** main
+- **Sıradaki İlk İş (Next Action):** Ana makineye geçmeden önce 1.5.2'yi denemelik bir kurulumda gerçek masaüstünde dene (UAC, Google ve OneDrive girişi).
+- **Bilinen Sorunlar / Dikkat Edilmesi Gerekenler:**
+  - Başarısız Kur uyarısı 1.5.2'den sonraki güncellemelerde çalışır; 1.5.1'den 1.5.2'ye geçiş eski yöntemi kullanır.
+  - Sürüm hattındaki hata yeniden olursa kayıtlı loglara bak.
+  - Gerçek Google ve OneDrive girişi, yükleme ve zamanlanmış çalışma denenmedi.
+  - Kurulum dosyasında Authenticode kod imzası yok.
+
+### [2026-11-02 - bilgisayar adı public repoda yazılmadı]
+- **Yapılanlar & Kararlar:**
   - "Kur" sırasında kurulum başarısız olursa veya hiç başlamazsa uygulama artık yeniden açılıyor ve bir kez, `update-install.log` dosyasını gösteren uyarı veriyor. Doğru kurulumda uyarı çıkmıyor.
   - Güncelleme kutusu yeniden açılınca denetim hemen yapılıyor.
   - Sürüm hattındaki kurulum sınaması log tutuyor, başarısızlıkta logları saklıyor, sabit süre yerine uygulamanın hazır olmasını bekliyor. Yeniden deneme eklenmedi, hiçbir denetim kaldırılmadı.
