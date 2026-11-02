@@ -17,10 +17,10 @@ Anahtar üretmek için: `FalcrebCloudBackup.ReleaseSigner.exe keygen <dosya>`. A
 
 ## Yayının doğrulanması
 
-Yayından sonra canlı sürümü, uygulamanın kullandığı kodla denetlemek için:
+Yayından sonra canlı sürümü, uygulamanın kullandığı kodla denetlemek için **yönetici olarak açılmış** bir PowerShell'de:
 
 ```powershell
-tools\FalcrebCloudBackup.ReleaseSigner\bin\Release\net48\FalcrebCloudBackup.ReleaseSigner.exe check-live 1.4.0
+tools\FalcrebCloudBackup.ReleaseSigner\bin\Release\net48\FalcrebCloudBackup.ReleaseSigner.exe check-live <bir önceki sürüm>
 ```
 
-Bu komut sürümü indirip imzasını doğrular, kurmaz.
+Bu komut sürümü indirip imzasını doğrular, kurmaz. Yönetici olmayan bir kabukta hiçbir şey indirmeden hata verir.
