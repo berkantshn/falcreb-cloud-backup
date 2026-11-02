@@ -4,6 +4,8 @@ Bu proje [Keep a Changelog](https://keepachangelog.com/tr/1.1.0/) formatını ta
 
 ## [Unreleased]
 
+## [1.5.2] - 2026-11-02
+
 ### Düzeltilenler
 - "Kur" ile başlatılan kurulum başarısız olursa veya hiç başlamazsa uygulama artık kendiliğinden yeniden açılıyor ve bir kez, log dosyasını gösteren bir uyarı veriyor.
 - Güncelleme denetimi kutusu yeniden açıldığında denetim günlük sırayı beklemeden hemen yapılıyor.
