@@ -4,6 +4,9 @@ Bu proje [Keep a Changelog](https://keepachangelog.com/tr/1.1.0/) formatını ta
 
 ## [Unreleased]
 
+### Değişenler
+- Çalışma günlüğü 1.5.2 durumuna göre güncellendi.
+
 ## [1.5.2] - 2026-11-02
 
 ### Düzeltilenler
