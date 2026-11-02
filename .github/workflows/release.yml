@@ -53,28 +53,48 @@ jobs:
           $setup = 'installer\output\FalcrebCloudBackup-Setup.exe'
           $exe = "$env:ProgramFiles\FalcrebCloudBackup\FalcrebCloudBackup.App.exe"
           $marker = "$env:ProgramData\FalcrebCloudBackup\ci-marker.txt"
-          $setupArgs = '/VERYSILENT', '/SUPPRESSMSGBOXES', '/NORESTART', '/CLOSEAPPLICATIONS'
+          $logs = "$env:RUNNER_TEMP\install-logs"
+          New-Item -ItemType Directory -Force $logs | Out-Null
           # Start-Process -Wait, kurulumun açtığı uygulama kapanana kadar da bekler; yalnızca kurulumu bekle.
-          function Install-Silently {
+          function Install-Silently($name) {
+            $setupArgs = '/VERYSILENT', '/SUPPRESSMSGBOXES', '/NORESTART', '/CLOSEAPPLICATIONS', "/LOG=`"$logs\$name.log`""
             $process = Start-Process $setup -ArgumentList $setupArgs -PassThru
             $null = $process.Handle
             if (-not $process.WaitForExit(300000)) { throw 'Kurulum 5 dakikada bitmedi' }
             $process
           }
-          $p = Install-Silently
+          # Sabit bekleme yavaş makinede yetmiyor: uygulama penceresi açılıp mesajlara cevap verene kadar bekle.
+          function Wait-AppReady {
+            $deadline = (Get-Date).AddMinutes(3)
+            while ((Get-Date) -lt $deadline) {
+              $app = Get-Process FalcrebCloudBackup.App -ErrorAction SilentlyContinue | Select-Object -First 1
+              if ($app -and $app.MainWindowHandle -ne 0 -and $app.Responding) { return }
+              Start-Sleep -Milliseconds 500
+            }
+            throw 'Uygulama kurulumdan sonra 3 dakikada hazır olmadı'
+          }
+          $p = Install-Silently 'ilk'
           if ($p.ExitCode -ne 0) { throw "İlk kurulum başarısız: $($p.ExitCode)" }
           if (-not (Test-Path $exe)) { throw 'Uygulama kurulmadı' }
-          Start-Sleep -Seconds 10
-          if (-not (Get-Process FalcrebCloudBackup.App -ErrorAction SilentlyContinue)) { throw 'Uygulama kurulumdan sonra açılmadı' }
+          Wait-AppReady
           New-Item -ItemType Directory -Force (Split-Path $marker) | Out-Null
           Set-Content $marker 'kept'
           # Güncellemenin aynısı: uygulama açıkken üstüne kurulur, veriler korunur.
-          $p = Install-Silently
+          $p = Install-Silently 'ustune'
           if ($p.ExitCode -ne 0) { throw "Üstüne kurulum başarısız: $($p.ExitCode)" }
           if ((Get-Content $marker) -ne 'kept') { throw 'Veri korunmadı' }
           $found = (Get-Item $exe).VersionInfo.ProductVersion
           if (-not $found.StartsWith($env:VERSION)) { throw "Kurulan sürüm yanlış: $found" }
           Get-Process FalcrebCloudBackup.App -ErrorAction SilentlyContinue | Stop-Process -Force
+
+      - name: Başarısız kurulumun logları
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: install-logs
+          path: ${{ runner.temp }}\install-logs
+          if-no-files-found: ignore
+          retention-days: 3
 
       - name: Yayımla
         if: github.ref_type == 'tag'

@@ -98,6 +98,9 @@ namespace FalcrebCloudBackup.Core.Localization
             Add(t, "Log_UpdateCheckFailed", "Update check failed: {0}", "Güncelleme denetimi başarısız: {0}");
             Add(t, "Log_UpdateSettingSaveFailed", "Could not save the update setting: {0}", "Güncelleme ayarı kaydedilemedi: {0}");
             Add(t, "Log_UpdateInstalling", "Verified update v{0}; starting the installer.", "v{0} güncellemesi doğrulandı, kurulum başlatılıyor.");
+            Add(t, "Update_FailedAfterRestart", "The last update could not be installed. The app is still on v{0}, and your jobs and settings were not changed. Details: {1}. You can try again when the update is offered.", "Son güncelleme kurulamadı. Uygulama v{0} sürümünde çalışmaya devam ediyor; görevleriniz ve ayarlarınız değişmedi. Ayrıntılar: {1}. Güncelleme önerildiğinde yeniden deneyebilirsiniz.");
+            Add(t, "Log_UpdateFailedAfterRestart", "The last update could not be installed; the app is on v{0}.", "Son güncelleme kurulamadı; uygulama v{0} sürümünde.");
+            Add(t, "Log_UpdateAttemptStoreFailed", "Could not read or write the update record: {0}", "Güncelleme kaydı okunamadı veya yazılamadı: {0}");
             Add(t, "Log_UpdateFailed", "Update failed.", "Güncelleme başarısız.");
             Add(t, "Main_AutoStartError", "Could not change the auto-start setting: {0}", "Otomatik başlatma ayarlanırken bir sorun oluştu: {0}");
             Add(t, "Main_ThemeDark", "Dark Theme", "Koyu Tema");

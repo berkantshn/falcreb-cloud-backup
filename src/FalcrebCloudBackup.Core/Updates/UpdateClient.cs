@@ -24,17 +24,27 @@ namespace FalcrebCloudBackup.Core.Updates
 
         public string Path { get; }
 
-        /// <summary>Kurulumu sessizce başlatır. Dosyalar değişirken uygulama kapanmış olmalıdır.</summary>
-        public void Start()
+        /// <summary>
+        /// Kurulumu sessizce başlatır. Dosyalar değişirken uygulama kapanmış olmalıdır.
+        /// Uygulama kapanacağı için sonucu sistemdeki cmd.exe bekler: kurulum başarısız olursa
+        /// veya hiç başlamazsa uygulamayı yeniden açar. Başarılı kurulumda açma işi kurulumundur.
+        /// </summary>
+        public void Start(string appExePath)
         {
             var log = System.IO.Path.Combine(AppPaths.LogsDirectory, "update-install.log");
+            var system = Environment.SystemDirectory;
             Process.Start(new ProcessStartInfo
             {
-                FileName = Path,
-                Arguments = $"/VERYSILENT /SUPPRESSMSGBOXES /NORESTART /CLOSEAPPLICATIONS /LOG=\"{log}\"",
+                FileName = System.IO.Path.Combine(system, "cmd.exe"),
+                Arguments = BuildCommandArguments(Path, $"/VERYSILENT /SUPPRESSMSGBOXES /NORESTART /CLOSEAPPLICATIONS /LOG=\"{log}\"", appExePath),
                 UseShellExecute = false,
+                CreateNoWindow = true,
+                WorkingDirectory = system,
             })?.Dispose();
         }
+
+        public static string BuildCommandArguments(string installerPath, string installerArguments, string appExePath) =>
+            $"/d /s /c \"start \"\" /wait \"{installerPath}\" {installerArguments} & if errorlevel 1 start \"\" \"{appExePath}\" {UpdateAttemptStore.FailedArgument}\"";
 
         public void Dispose() => _lock.Dispose();
     }
