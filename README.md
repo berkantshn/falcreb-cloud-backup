@@ -2,7 +2,7 @@
 
 Reliable Windows backup to Google Drive and OneDrive, with Firebird support, scheduling and integrity checks. Runs on Windows Server 2012 and newer. Made By FALCREB.
 
-[English](#english) · [Türkçe](#türkçe)
+**[⬇ Download the installer](https://github.com/berkantshn/falcreb-cloud-backup/releases/latest/download/FalcrebCloudBackup-Setup.exe)** · **[▶ Take the tour](https://berkantshn.github.io/falcreb-cloud-backup/)** · [English](#english) · [Türkçe](#türkçe)
 
 ---
 
@@ -24,6 +24,7 @@ A lightweight Windows desktop app that automatically backs up a local folder or 
 - **No deletion**: the app has no delete function for backups, by design. Each upload goes to a new timestamped folder.
 - **Two triggers**: Windows Task Scheduler (daily, weekly, hourly) and optional file watching on the source folder, throttled to once per 5 minutes per job.
 - **Integrity check**: the upload is verified by SHA-256 comparison.
+- **Signed updates**: the app tells you when a new version is out. Installing takes one click and your PIN, and a backup in progress is never interrupted. Each update's signature, size and SHA-256 are verified before it runs. You can turn the daily check off.
 - **Compression**: optional zip before upload.
 - **Security**: a local PIN and/or an authenticator app (TOTP), with recovery-code PIN reset and a temporary 3-minute settings unlock.
 - **Reliable background operation**: the app shows no lock screen on startup, so scheduled backups keep running after a reboot. Sensitive actions still ask for the PIN or authenticator.
@@ -99,7 +100,8 @@ Open the app, go to **Cloud Connections**, and click **Connect** for each provid
 
 - This repository contains no OAuth credentials, passwords or tokens. `.gitignore` also blocks common credential and app-data file names as a safety net. Never commit `google_client_secret.json` or `onedrive_client_config.json`.
 - Do not put your own credentials into an installer you distribute. Anyone could extract them from it.
-- The app has no server and no telemetry. It talks only to Google, Microsoft, and the SMTP server or Telegram if you enable notifications.
+- The app has no server and no telemetry. It talks only to Google, Microsoft, the SMTP server or Telegram if you enable notifications, and GitHub for the update check, which you can turn off. The check sends no data about you or your backups.
+- The installer has no paid publisher certificate, so Windows SmartScreen may warn on first install: choose "More info" and "Run anyway". Update signatures prove an update came from this project; they are not a Microsoft or publisher certificate.
 - **Google Drive** uses the `drive.file` scope, so the app sees only files it created. **OneDrive** uses `Files.ReadWrite`, which covers the whole OneDrive, although the app works inside one `FalcrebCloudBackup` folder.
 - **Google's refresh token is encrypted with DPAPI** in **LocalMachine** scope and stored as a `.dpapi` file under `%ProgramData%\FalcrebCloudBackup\tokens\google_drive`. A plain JSON token left by an older version is encrypted the first time it is read, and the plain file is deleted only after the encrypted copy has been verified. If the token can't be read (for example, the file was copied from another computer), scheduled backups fail with a "not connected" message and you reconnect in the app. Backup runs never open a browser.
 - **The OneDrive token cache** is encrypted by Microsoft's MSAL library with DPAPI in **CurrentUser** scope, so it can be read only by the Windows account that connected.
@@ -140,6 +142,7 @@ Yerel bir klasörü veya dosyayı Google Drive ve OneDrive'a (ikisine aynı anda
 - **Takılmaya karşı koruma**: Zamanlanmış görevlerde süre sınırı ve tekrar deneme; yedekleme çalışmaları tarayıcı açıp beklemez; yüklemelerde zaman aşımı, yeniden deneme ve kaldığı yerden devam vardır.
 - **Silme yok**: Uygulamada yedekleri silen bir işlev kasıtlı olarak yoktur. Her yükleme zaman damgalı yeni bir klasöre gider.
 - **Çift tetikleme**: Windows Task Scheduler (günlük, haftalık, saatlik) ve isteğe bağlı dosya izleme (aynı görev en fazla 5 dakikada bir tetiklenir).
+- **İmzalı güncelleme**: Yeni sürüm çıkınca uygulama haber verir. Kurmak için bir tıklama ve PIN yeterli; süren bir yedekleme asla kesilmez. Her güncellemenin imzası, boyutu ve SHA-256 özeti çalıştırılmadan önce doğrulanır. Günlük denetimi kapatabilirsiniz.
 - **Bütünlük doğrulama**: Yükleme SHA-256 karşılaştırmasıyla doğrulanır.
 - **Sıkıştırma**: Yüklemeden önce isteğe bağlı zip'leme.
 - **Güvenlik**: Yerel PIN ve/veya authenticator uygulaması (TOTP), kurtarma koduyla PIN sıfırlama ve 3 dakikalık geçici ayar kilidi açma.
@@ -216,7 +219,8 @@ Uygulamada **Bulut Bağlantıları** ekranını açıp her sağlayıcı için **
 
 - Bu depoda OAuth kimliği, şifre veya token bulunmaz. `.gitignore` da yaygın kimlik ve uygulama verisi dosya adlarını ek önlem olarak engeller. `google_client_secret.json` ve `onedrive_client_config.json` dosyalarını asla commit etmeyin.
 - Kendi kimliklerinizi dağıttığınız bir kurulum paketine koymayın. Herkes onları paketten çıkarabilir.
-- Uygulamanın sunucusu ve telemetrisi yoktur. Yalnızca Google, Microsoft ve bildirimleri açtıysanız SMTP sunucusu veya Telegram ile konuşur.
+- Uygulamanın sunucusu ve telemetrisi yoktur. Yalnızca Google, Microsoft, bildirimleri açtıysanız SMTP sunucusu veya Telegram ve kapatılabilen güncelleme denetimi için GitHub ile konuşur. Denetim sizinle veya yedeklerinizle ilgili hiçbir veri göndermez.
+- Kurulum dosyasında ücretli yayıncı sertifikası yoktur, bu yüzden Windows SmartScreen ilk kurulumda uyarabilir: "Ek bilgi" ve "Yine de çalıştır"ı seçin. Güncelleme imzaları güncellemenin bu projeden geldiğini kanıtlar; Microsoft veya yayıncı sertifikası anlamına gelmez.
 - **Google Drive** `drive.file` kapsamını kullanır, uygulama yalnızca kendi oluşturduğu dosyaları görür. **OneDrive** tüm OneDrive'ı kapsayan `Files.ReadWrite` iznini kullanır, ama uygulama tek bir `FalcrebCloudBackup` klasöründe çalışır.
 - **Google yenileme token'ı DPAPI ile şifrelenir** (**LocalMachine** kapsamı) ve `%ProgramData%\FalcrebCloudBackup\tokens\google_drive` altında `.dpapi` dosyası olarak saklanır. Eski sürümden kalan düz JSON token ilk okunduğunda şifrelenir; düz metin dosya, şifreli kopya doğrulandıktan sonra silinir. Token okunamazsa (örneğin dosya başka bir bilgisayardan kopyalandıysa) zamanlanmış yedekler "bağlı değil" mesajıyla başarısız olur ve uygulamadan yeniden bağlanırsınız. Yedekleme çalışmaları asla tarayıcı açmaz.
 - **OneDrive token önbelleği** Microsoft'un MSAL kütüphanesi tarafından DPAPI **CurrentUser** kapsamıyla şifrelenir; yalnızca bağlantıyı kuran Windows hesabı okuyabilir.

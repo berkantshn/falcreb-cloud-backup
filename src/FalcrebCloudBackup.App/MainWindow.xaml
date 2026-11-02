@@ -171,10 +171,18 @@
             </Grid>
         </Grid>
 
-        <TextBlock Grid.Row="6" HorizontalAlignment="Center" Margin="0,16,0,0" FontSize="11" Opacity="0.6">
+        <StackPanel Grid.Row="6" Margin="0,16,0,0" HorizontalAlignment="Center">
+        <TextBlock x:Name="UpdateNotice" Visibility="Collapsed" HorizontalAlignment="Center" Margin="0,0,0,6" FontWeight="SemiBold">
+            <Run x:Name="UpdateNoticeText" Text="" />
+            <Hyperlink x:Name="UpdateInstallLink" Click="OnInstallUpdateClick"><Run Text="{loc:Tr Update_Install}" /></Hyperlink>
+        </TextBlock>
+        <CheckBox x:Name="UpdateCheckCheckBox" HorizontalAlignment="Center" Margin="0,0,0,6" FontSize="11" Content="{loc:Tr Main_CheckUpdates}"
+                  Checked="OnUpdateCheckChanged" Unchecked="OnUpdateCheckChanged" />
+        <TextBlock HorizontalAlignment="Center" FontSize="11" Opacity="0.6">
             <Run x:Name="VersionText" Text="" />
             <Run Text=" · Made By FALCREB · " />
             <Hyperlink NavigateUri="https://github.com/berkantshn/falcreb-cloud-backup/issues" RequestNavigate="OnSupportLinkClick">GitHub Issues</Hyperlink>
         </TextBlock>
+        </StackPanel>
     </Grid>
 </mah:MetroWindow>

@@ -13,12 +13,24 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FalcrebCloudBackup.Scheduli
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FalcrebCloudBackup.App", "src\FalcrebCloudBackup.App\FalcrebCloudBackup.App.csproj", "{6CC9F1BF-BBD7-4414-8228-E22A4DADA32E}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FalcrebCloudBackup.ReleaseSigner", "tools\FalcrebCloudBackup.ReleaseSigner\FalcrebCloudBackup.ReleaseSigner.csproj", "{F49ECE59-FD30-4344-B26E-C9B9A1D30681}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FalcrebCloudBackup.Core.Tests", "tests\FalcrebCloudBackup.Core.Tests\FalcrebCloudBackup.Core.Tests.csproj", "{C2BFF144-8BFC-4C61-8276-B5CAB5437040}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{F49ECE59-FD30-4344-B26E-C9B9A1D30681}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F49ECE59-FD30-4344-B26E-C9B9A1D30681}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F49ECE59-FD30-4344-B26E-C9B9A1D30681}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F49ECE59-FD30-4344-B26E-C9B9A1D30681}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C2BFF144-8BFC-4C61-8276-B5CAB5437040}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C2BFF144-8BFC-4C61-8276-B5CAB5437040}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C2BFF144-8BFC-4C61-8276-B5CAB5437040}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C2BFF144-8BFC-4C61-8276-B5CAB5437040}.Release|Any CPU.Build.0 = Release|Any CPU
 		{0AD3079C-DE94-488B-97BD-290BB5073250}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{0AD3079C-DE94-488B-97BD-290BB5073250}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0AD3079C-DE94-488B-97BD-290BB5073250}.Release|Any CPU.ActiveCfg = Release|Any CPU

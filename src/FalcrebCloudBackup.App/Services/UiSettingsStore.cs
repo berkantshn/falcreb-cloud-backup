@@ -10,6 +10,9 @@ namespace FalcrebCloudBackup.App.Services
 
         /// <summary>"en" veya "tr". Boşsa sistem arayüz diline göre belirlenir (bkz. Loc.Resolve).</summary>
         public string Language { get; set; }
+
+        /// <summary>Yeni sürüm denetimi. Kapatılırsa uygulama GitHub'a hiç bağlanmaz.</summary>
+        public bool CheckForUpdates { get; set; } = true;
     }
 
     /// <summary>The light/dark and language preferences — separate from BackupJob config since it's purely cosmetic and per-machine.</summary>

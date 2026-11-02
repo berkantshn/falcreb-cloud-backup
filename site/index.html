@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>FalcrebCloudBackup: reliable Windows backup to Google Drive and OneDrive</title>
+<meta name="description" content="Back up a Windows folder or Firebird database to Google Drive and OneDrive, with scheduling, integrity checks and alerts.">
+<style>
+  :root { color-scheme: light dark; --bg:#f6f7f9; --card:#fff; --text:#1c2026; --muted:#5d6672; --line:#d9dde3; --accent:#0b6bcb; }
+  @media (prefers-color-scheme: dark) { :root { --bg:#14171b; --card:#1d2126; --text:#e7eaee; --muted:#9aa4b0; --line:#333a42; --accent:#6db3ff; } }
+  * { box-sizing:border-box; }
+  body { margin:0; background:var(--bg); color:var(--text); font:16px/1.55 system-ui,"Segoe UI",Roboto,sans-serif; }
+  main { max-width:920px; margin:0 auto; padding:32px 18px 64px; }
+  h1 { margin:0 0 6px; font-size:1.9rem; }
+  h2 { font-size:1.15rem; margin:30px 0 8px; }
+  .lead { color:var(--muted); margin:0 0 18px; }
+  .bar { display:flex; gap:12px; flex-wrap:wrap; align-items:center; margin-bottom:20px; }
+  a { color:var(--accent); }
+  button { font:inherit; padding:8px 14px; border-radius:7px; border:1px solid var(--line); background:var(--card); color:var(--text); cursor:pointer; }
+  .cta { display:inline-block; padding:11px 20px; border-radius:8px; background:var(--accent); color:#fff; font-weight:600; text-decoration:none; }
+  @media (prefers-color-scheme: dark) { .cta { color:#08131f; } }
+  .tabs { display:flex; gap:8px; flex-wrap:wrap; margin-bottom:12px; }
+  .tabs button[aria-selected=true] { border-color:var(--accent); box-shadow:0 0 0 1px var(--accent); font-weight:600; }
+  figure { margin:0; background:var(--card); border:1px solid var(--line); border-radius:10px; overflow:hidden; }
+  figure img { display:block; width:100%; height:auto; }
+  figcaption { padding:12px 16px; }
+  small { color:var(--muted); }
+  ul { padding-left:20px; }
+  ol { padding-left:20px; }
+  li { margin:5px 0; }
+</style>
+</head>
+<body>
+<main>
+  <div class="bar">
+    <button id="lang" type="button">Türkçe</button>
+    <a href="https://github.com/berkantshn/falcreb-cloud-backup" data-t="repo"></a>
+  </div>
+  <h1>FalcrebCloudBackup</h1>
+  <p class="lead" data-t="lead"></p>
+  <p><a class="cta" href="https://github.com/berkantshn/falcreb-cloud-backup/releases/latest/download/FalcrebCloudBackup-Setup.exe" data-t="download"></a></p>
+  <small data-t="req"></small>
+
+  <h2 data-t="tour"></h2>
+  <div class="tabs" role="tablist" id="tabs"></div>
+  <figure>
+    <img id="shot" alt="" width="1100" height="760">
+    <figcaption id="caption"></figcaption>
+  </figure>
+  <p><small data-t="fake"></small></p>
+
+  <h2 data-t="whyTitle"></h2>
+  <ul>
+    <li data-t="why1"></li>
+    <li data-t="why2"></li>
+    <li data-t="why3"></li>
+    <li data-t="why4"></li>
+  </ul>
+
+  <h2 data-t="startTitle"></h2>
+  <ol>
+    <li data-t="start1"></li>
+    <li data-t="start2"></li>
+    <li data-t="start3"></li>
+  </ol>
+  <p><a href="https://github.com/berkantshn/falcreb-cloud-backup#setup-your-own-cloud-credentials" data-t="setup"></a></p>
+</main>
+<script>
+const T = {
+  en: {
+    repo:'Source on GitHub', lead:'Back up a Windows folder or a Firebird database to Google Drive and OneDrive, on a schedule, with integrity checks and alerts when something goes wrong. Free and open source.',
+    download:'Download for Windows', req:'Windows Server 2012 or later, or Windows 10/11, with .NET Framework 4.8. Windows SmartScreen may warn on first install because the installer has no paid certificate: choose More info, then Run anyway.',
+    tour:'Take a look inside', fake:'Real app screens with sample data.',
+    main:'Main window', mainC:'Every job shows its health and last successful backup. A job that silently stopped is flagged.',
+    job:'Job editor', jobC:'Choose the source, the cloud destinations and the schedule. Firebird databases get a restorable gbak backup.',
+    cloud:'Cloud connections', cloudC:'Connect Google Drive and OneDrive, and watch how full each account is.',
+    notify:'Notifications', notifyC:'Get an email or Telegram message when a backup fails or does not run on time.',
+    whyTitle:'Why trust it with your backups', why1:'Each upload is verified by SHA-256 comparison.', why2:'The app has no delete function for backups. Each one goes to a new timestamped folder.', why3:'If the machine was off at the scheduled time, the missed run is caught up.', why4:'Updates are signed, and a running backup is never interrupted.',
+    startTitle:'Get started', start1:'Download and run the installer.', start2:'Register your own free Google and/or Microsoft app. This project ships no shared credentials, so your access stays yours.', start3:'Open the app, connect your cloud account and create your first job.', setup:'Read the full setup guide',
+  },
+  tr: {
+    repo:"GitHub'da kaynak kod", lead:"Bir Windows klasörünü veya Firebird veritabanını Google Drive ve OneDrive'a zamanlanmış olarak yedekler, bütünlüğünü doğrular, bir sorun olunca haber verir. Ücretsiz ve açık kaynak.",
+    download:'Windows için indir', req:'Windows Server 2012 veya üzeri ya da Windows 10/11 ve .NET Framework 4.8 gerekir. Kurulum dosyasında ücretli sertifika olmadığı için Windows SmartScreen ilk kurulumda uyarabilir: Ek bilgi, ardından Yine de çalıştır seçeneğini kullan.',
+    tour:'İçeriye bir göz at', fake:'Örnek verilerle gerçek uygulama ekranları.',
+    main:'Ana pencere', mainC:'Her görevin sağlık durumu ve son başarılı yedeği görünür. Sessizce duran görev işaretlenir.',
+    job:'Görev düzenleme', jobC:'Kaynağı, bulut hedeflerini ve zamanlamayı seç. Firebird veritabanları için geri yüklenebilir gbak yedeği alınır.',
+    cloud:'Bulut bağlantıları', cloudC:'Google Drive ve OneDrive hesaplarını bağla, her hesabın ne kadar dolduğunu gör.',
+    notify:'Bildirimler', notifyC:'Yedekleme başarısız olunca veya zamanında çalışmayınca e-posta ya da Telegram mesajı al.',
+    whyTitle:'Yedeklerini neden emanet edebilirsin', why1:'Her yükleme SHA-256 karşılaştırmasıyla doğrulanır.', why2:'Uygulamada yedek silme işlevi yoktur. Her yedek tarih damgalı yeni bir klasöre gider.', why3:'Makine zamanlanmış saatte kapalıysa kaçırılan çalışma telafi edilir.', why4:'Güncellemeler imzalıdır ve süren bir yedekleme asla kesilmez.',
+    startTitle:'Başla', start1:'Kurulum dosyasını indirip çalıştır.', start2:'Google ve/veya Microsoft tarafında kendi ücretsiz uygulama kaydını oluştur. Bu proje ortak kimlik bilgisi içermez, erişim sende kalır.', start3:'Uygulamayı aç, bulut hesabını bağla ve ilk görevini oluştur.', setup:'Kurulum rehberinin tamamını oku',
+  },
+};
+const SHOTS = [['main','main'],['job','job-edit'],['cloud','cloud-connections'],['notify','notifications']];
+const $ = (id) => document.getElementById(id);
+let lang = (navigator.language || '').toLowerCase().startsWith('tr') ? 'tr' : 'en';
+let active = 0;
+
+function render() {
+  const t = T[lang];
+  document.documentElement.lang = lang;
+  document.querySelectorAll('[data-t]').forEach((el) => { el.textContent = t[el.dataset.t]; });
+  $('lang').textContent = lang === 'tr' ? 'English' : 'Türkçe';
+  $('tabs').replaceChildren(...SHOTS.map(([key], i) => {
+    const b = document.createElement('button');
+    b.type = 'button';
+    b.role = 'tab';
+    b.textContent = t[key];
+    b.setAttribute('aria-selected', String(i === active));
+    b.addEventListener('click', () => { active = i; render(); });
+    return b;
+  }));
+  const [key, file] = SHOTS[active];
+  $('shot').src = `screenshots/${file}-${lang}.png`;
+  $('shot').alt = t[key];
+  $('caption').textContent = t[`${key}C`];
+}
+$('lang').addEventListener('click', () => { lang = lang === 'tr' ? 'en' : 'tr'; render(); });
+render();
+</script>
+</body>
+</html>

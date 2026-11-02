@@ -4,6 +4,13 @@ Bu proje [Keep a Changelog](https://keepachangelog.com/tr/1.1.0/) formatını ta
 
 ## [Unreleased]
 
+## [1.5.0] - 2026-11-02
+
+### Eklenenler
+- **İmzalı güncelleme**: Yeni sürüm çıkınca uygulama haber verir; imzası, boyutu ve özeti doğrulanan güncelleme tek tıkla ve PIN ile kurulur. Süren yedekleme kesilmez, günlük denetim kapatılabilir.
+- İndirilebilir kurulum dosyası: her sürüm GitHub Releases'te hazır olarak yayımlanır.
+- Tarayıcıdan gezilebilen uygulama turu.
+
 ### Açık kaynak hazırlığı
 - Kurulum paketi artık OAuth kimliği içermiyor; her kullanıcı kendi Google ve Microsoft uygulama kimliğini README'deki adımlarla ekliyor.
 - MIT lisansı eklendi, destek kanalı GitHub Issues oldu, gizlilik ve kullanım koşulları sayfaları kaldırıldı; "Made By FALCREB" ibaresi eklendi.

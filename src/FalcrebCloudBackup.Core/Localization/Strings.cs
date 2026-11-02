@@ -88,6 +88,17 @@ namespace FalcrebCloudBackup.Core.Localization
             Add(t, "Tray_Problems_Other", "FalcrebCloudBackup: problems in {0} jobs", "FalcrebCloudBackup — {0} görevde sorun var");
 
             Add(t, "Main_AutoStart", "Start with Windows", "Windows başlangıcında başlat");
+            Add(t, "Main_CheckUpdates", "Check for new versions daily", "Her gün yeni sürümü denetle");
+            Add(t, "Update_Available", "New version available: v{0}.", "Yeni sürüm var: v{0}.");
+            Add(t, "Update_Install", "Install", "Kur");
+            Add(t, "Update_Downloading", "Downloading and verifying v{0}...", "v{0} indiriliyor ve doğrulanıyor...");
+            Add(t, "Update_Confirm", "Install v{0} now? The app closes during the update and reopens when it finishes. Your jobs and settings are kept.", "v{0} şimdi kurulsun mu? Güncelleme sırasında uygulama kapanır, bitince yeniden açılır. Görevleriniz ve ayarlarınız korunur.");
+            Add(t, "Update_BackupRunning", "A backup is running. Try the update again when it finishes.", "Şu an bir yedekleme çalışıyor. Bitince güncellemeyi yeniden deneyin.");
+            Add(t, "Update_Failed", "The update could not be installed and nothing was changed: {0}", "Güncelleme kurulamadı, hiçbir şey değiştirilmedi: {0}");
+            Add(t, "Log_UpdateCheckFailed", "Update check failed: {0}", "Güncelleme denetimi başarısız: {0}");
+            Add(t, "Log_UpdateSettingSaveFailed", "Could not save the update setting: {0}", "Güncelleme ayarı kaydedilemedi: {0}");
+            Add(t, "Log_UpdateInstalling", "Verified update v{0}; starting the installer.", "v{0} güncellemesi doğrulandı, kurulum başlatılıyor.");
+            Add(t, "Log_UpdateFailed", "Update failed.", "Güncelleme başarısız.");
             Add(t, "Main_AutoStartError", "Could not change the auto-start setting: {0}", "Otomatik başlatma ayarlanırken bir sorun oluştu: {0}");
             Add(t, "Main_ThemeDark", "Dark Theme", "Koyu Tema");
             Add(t, "Main_ThemeLight", "Light Theme", "Açık Tema");
