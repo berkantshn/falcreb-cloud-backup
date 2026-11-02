@@ -1,0 +1,41 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net48</TargetFramework>
+    <LangVersion>latest</LangVersion>
+    <Nullable>disable</Nullable>
+    <OutputType>WinExe</OutputType>
+    <UseWPF>true</UseWPF>
+    <RootNamespace>FalcrebCloudBackup.App</RootNamespace>
+    <AssemblyName>FalcrebCloudBackup.App</AssemblyName>
+    <ApplicationManifest>app.manifest</ApplicationManifest>
+    <ApplicationIcon>Assets\app.ico</ApplicationIcon>
+    <Version>1.4.0</Version>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="MahApps.Metro" Version="2.4.10" />
+    <PackageReference Include="Hardcodet.NotifyIcon.Wpf" Version="1.1.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Assets\logo_icon.png" />
+    <Resource Include="Assets\logo_full.png" />
+    <Content Include="Assets\app.ico">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
+    <!-- FolderBrowserDialog: WPF has no native folder picker. -->
+    <Reference Include="System.Windows.Forms" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\FalcrebCloudBackup.Core\FalcrebCloudBackup.Core.csproj" />
+    <ProjectReference Include="..\FalcrebCloudBackup.Auth\FalcrebCloudBackup.Auth.csproj" />
+    <ProjectReference Include="..\FalcrebCloudBackup.CloudProviders\FalcrebCloudBackup.CloudProviders.csproj" />
+    <ProjectReference Include="..\FalcrebCloudBackup.Scheduling\FalcrebCloudBackup.Scheduling.csproj" />
+  </ItemGroup>
+
+</Project>

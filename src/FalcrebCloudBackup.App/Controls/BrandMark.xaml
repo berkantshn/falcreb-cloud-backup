@@ -1,0 +1,17 @@
+<UserControl x:Class="FalcrebCloudBackup.App.Controls.BrandMark"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             x:Name="Root">
+    <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+        <Image Source="pack://application:,,,/Assets/logo_icon.png"
+               Height="{Binding IconHeight, ElementName=Root}"
+               Stretch="Uniform"
+               RenderOptions.BitmapScalingMode="HighQuality"
+               Margin="0,0,10,0" />
+
+        <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+            <TextBlock Text="Falcreb" FontSize="{Binding TextSize, ElementName=Root}" FontWeight="Bold" Foreground="#4C8CFF" />
+            <TextBlock Text="CloudBackup" FontSize="{Binding TextSize, ElementName=Root}" FontWeight="Light" Opacity="0.85" Margin="2,0,0,0" />
+        </StackPanel>
+    </StackPanel>
+</UserControl>

@@ -1,0 +1,30 @@
+bin/
+obj/
+.vs/
+*.user
+_qa_build/
+installer/output/
+*_wpftmp.csproj
+
+# Never commit local secrets/config — none of these should ever live inside this repo anyway
+# (the app stores them under %ProgramData%\FalcrebCloudBackup, outside the source tree), but
+# ignore them defensively in case a stray copy ever ends up here.
+*client_secret*.json
+*client_config*.json
+auth.dat
+jobs.json
+history.json
+notifications.json
+token_cache.bin
+
+# Standart taban liste
+node_modules/
+__pycache__/
+.venv/
+dist/
+build/
+*.log
+.DS_Store
+.env
+.env.*
+!.env.example

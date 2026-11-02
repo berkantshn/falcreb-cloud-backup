@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<asmv1:assembly manifestVersion="1.0" xmlns="urn:schemas-microsoft-com:asm.v1" xmlns:asmv1="urn:schemas-microsoft-com:asm.v1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <assemblyIdentity version="1.0.0.0" name="FalcrebCloudBackup.App.app" />
+
+  <!--
+    Task Scheduler kaydı (RegisterTaskDefinition) yönetici hakları olmadan E_ACCESSDENIED ile
+    başarısız oluyor; görev ekleme/düzenleme bu yüzden çalışması için uygulamanın her zaman
+    yönetici olarak başlatılması gerekiyor.
+  -->
+  <trustInfo xmlns="urn:schemas-microsoft-com:asm.v2">
+    <security>
+      <requestedPrivileges xmlns="urn:schemas-microsoft-com:asm.v3">
+        <requestedExecutionLevel level="requireAdministrator" uiAccess="false" />
+      </requestedPrivileges>
+    </security>
+  </trustInfo>
+</asmv1:assembly>

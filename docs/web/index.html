@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>FalcrebCloudBackup</title>
+<meta name="description" content="Windows için otomatik bulut yedekleme uygulaması — yerel klasörlerinizi Google Drive ve OneDrive'a yedekler.">
+<style>
+  body { font-family: -apple-system, "Segoe UI", Roboto, Arial, sans-serif; line-height: 1.65;
+         max-width: 760px; margin: 0 auto; padding: 32px 20px 64px; color: #1c1c1e; background: #fff; }
+  h1 { font-size: 2rem; margin-bottom: 4px; }
+  h2 { font-size: 1.15rem; margin-top: 32px; border-bottom: 1px solid #e5e5ea; padding-bottom: 6px; }
+  .tagline { color: #6b6b70; font-size: 1.05rem; margin-top: 0; }
+  .lead { background: #f5f7fa; border-left: 4px solid #2e8be0; padding: 14px 16px; border-radius: 4px; }
+  ul { padding-left: 20px; }
+  li { margin: 8px 0; }
+  a { color: #1a6fc4; }
+  footer { margin-top: 48px; padding-top: 16px; border-top: 1px solid #e5e5ea; color: #6b6b70; font-size: .9rem; }
+  footer a { margin-right: 16px; }
+</style>
+</head>
+<body>
+
+<h1>FalcrebCloudBackup</h1>
+<p class="tagline">Windows için otomatik bulut yedekleme uygulaması</p>
+
+<p class="lead">
+  FalcrebCloudBackup, bilgisayarınızdaki belirlediğiniz klasör veya dosyaları düzenli olarak
+  <strong>sizin kendi</strong> Google Drive ve Microsoft OneDrive hesabınıza yedekleyen bir masaüstü
+  uygulamasıdır. Uygulamanın kendine ait bir sunucusu yoktur; verileriniz yalnızca sizin bulut
+  hesabınıza gider. Google ve Microsoft bağlantıları için her kullanıcı kendi uygulama kimliğini
+  tanımlar; adımlar <a href="https://github.com/berkantshn/falcreb-cloud-backup#readme">README</a> dosyasındadır.
+</p>
+
+<h2>Ne yapar?</h2>
+<ul>
+  <li><strong>Aynı anda birden fazla buluta yedekler.</strong> Bir görev hem Google Drive'a hem
+      OneDrive'a yükleyebilir.</li>
+  <li><strong>Hiçbir şeyi silmez.</strong> Her yedekleme, öncekinin üzerine yazmak yerine tarih-saat
+      damgalı yeni bir klasöre gider. Uygulamada silme özelliği bilinçli olarak yoktur.</li>
+  <li><strong>Zamanlanmış ve anlık çalışır.</strong> Windows Görev Zamanlayıcı ile belirlediğiniz
+      saatte; ayrıca istenirse kaynak klasöre yeni dosya düştüğü anda.</li>
+  <li><strong>Veritabanlarını doğru yöntemle yedekler.</strong> Kaynakta Firebird veritabanı varsa
+      (örn. AKINSOFT Wolvox), ham dosya kopyası yerine veritabanının kendi yedekleme aracı kullanılır —
+      böylece program açıkken bile tutarlı, geri yüklenebilir bir yedek alınır.</li>
+  <li><strong>Yüklemeyi doğrular.</strong> Yükleme sonrası dosya geri indirilip SHA-256 ile
+      karşılaştırılır.</li>
+  <li><strong>Sorun çıkarsa haber verir.</strong> Başarısız bir yedekleme ya da uzun süredir yedek
+      alınamaması durumunda e-posta veya Telegram bildirimi gönderir.</li>
+  <li><strong>Güvenlik.</strong> Hassas işlemler için PIN ve/veya doğrulayıcı uygulaması (2FA)
+      desteklenir.</li>
+</ul>
+
+<h2>Gereksinimler</h2>
+<p>
+  Windows Server 2012 ve üzeri ya da Windows 10/11 · .NET Framework 4.8
+</p>
+
+<h2>Destek ve iletişim</h2>
+<p>
+  Uygulama hakkındaki soru ve talepleriniz için:
+  <a href="https://github.com/berkantshn/falcreb-cloud-backup/issues">GitHub Issues</a>
+</p>
+
+<p>
+  AKINSOFT Wolvox ve Firebird uyumluluğu yalnızca bir özelliktir; bu proje AKINSOFT veya Firebird
+  Foundation ile bağlantılı değildir, onlar tarafından onaylanmamıştır.
+</p>
+
+<footer>
+  FalcrebCloudBackup · Made By FALCREB
+</footer>
+
+</body>
+</html>

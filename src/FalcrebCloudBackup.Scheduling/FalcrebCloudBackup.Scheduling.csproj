@@ -1,0 +1,19 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net48</TargetFramework>
+    <LangVersion>latest</LangVersion>
+    <Nullable>disable</Nullable>
+    <RootNamespace>FalcrebCloudBackup.Scheduling</RootNamespace>
+    <AssemblyName>FalcrebCloudBackup.Scheduling</AssemblyName>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="TaskScheduler" Version="2.11.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\FalcrebCloudBackup.Core\FalcrebCloudBackup.Core.csproj" />
+  </ItemGroup>
+
+</Project>
