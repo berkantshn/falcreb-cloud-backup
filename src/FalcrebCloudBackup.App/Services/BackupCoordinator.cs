@@ -30,6 +30,11 @@ namespace FalcrebCloudBackup.App.Services
         /// <summary>Uygulama içinden başlatılan (izleyici veya "Şimdi Çalıştır") her çalışmanın sonucu — arka plan iş parçacığında tetiklenir.</summary>
         public event Action<BackupRunResult> RunCompleted;
 
+        private int _activeRuns;
+
+        /// <summary>Bu süreçte süren bir yedekleme varsa true; güncelleme onu kesmemek için bekler.</summary>
+        public bool IsBusy => Volatile.Read(ref _activeRuns) > 0;
+
         public INotifier Notifier { get; }
 
         public BackupCoordinator(string exePath)
@@ -145,8 +150,10 @@ namespace FalcrebCloudBackup.App.Services
         {
             var linked = CancellationTokenSource.CreateLinkedTokenSource(cancellationToken);
             linked.CancelAfter(TaskSchedulerService.JobExecutionTimeLimit);
+            Interlocked.Increment(ref _activeRuns);
             return _engine.RunAsync(job, linked.Token, statusProgress).ContinueWith(t =>
             {
+                Interlocked.Decrement(ref _activeRuns);
                 linked.Dispose();
                 return t.GetAwaiter().GetResult();
             }, TaskScheduler.Default);

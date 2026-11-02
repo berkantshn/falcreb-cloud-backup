@@ -1,0 +1,79 @@
+# Made By FALCREB
+# Test eder, kurulum dosyasını üretir, sessiz kurulumu sınar. v ile başlayan bir tag'de ayrıca
+# imzalar ve GitHub Releases'e yükler. PR'da imza ve yayın adımları atlanır.
+# Herhangi bir adım geçmezse hiçbir şey yayımlanmaz.
+name: Release
+
+on:
+  push:
+    tags: ['v*']
+  pull_request:
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: windows-latest
+    timeout-minutes: 30
+    defaults:
+      run:
+        shell: pwsh
+    steps:
+      - uses: actions/checkout@v7
+
+      - name: Tag ile uygulama sürümü aynı mı
+        run: |
+          [xml]$project = Get-Content src/FalcrebCloudBackup.App/FalcrebCloudBackup.App.csproj
+          $version = @($project.Project.PropertyGroup.Version | Where-Object { $_ })[0]
+          if ("$env:GITHUB_REF_TYPE" -eq 'tag' -and "v$version" -ne "$env:GITHUB_REF_NAME") { throw "Tag ve csproj sürümü farklı" }
+          "VERSION=$version" | Out-File $env:GITHUB_ENV -Append
+
+      - run: dotnet test FalcrebCloudBackup.sln -c Release --nologo
+      - run: dotnet build FalcrebCloudBackup.sln -c Release --nologo
+
+      - name: Kurulum dosyasını üret
+        run: |
+          choco install innosetup -y --no-progress
+          & "${env:ProgramFiles(x86)}\Inno Setup 6\ISCC.exe" /Qp "/DMyAppVersion=$env:VERSION" installer\FalcrebCloudBackup.iss
+          if ($LASTEXITCODE -ne 0) { throw 'ISCC başarısız' }
+
+      - name: İmzala
+        if: github.ref_type == 'tag'
+        env:
+          UPDATE_SIGNING_KEY: ${{ secrets.UPDATE_SIGNING_KEY }}
+        run: |
+          $url = "https://github.com/$env:GITHUB_REPOSITORY/releases/download/$env:GITHUB_REF_NAME/FalcrebCloudBackup-Setup.exe"
+          $signer = 'tools\FalcrebCloudBackup.ReleaseSigner\bin\Release\net48\FalcrebCloudBackup.ReleaseSigner.exe'
+          & $signer sign $env:VERSION $url installer\output\FalcrebCloudBackup-Setup.exe installer\output\update.json
+          if ($LASTEXITCODE -ne 0) { throw 'İmzalama başarısız' }
+
+      - name: Sessiz kurulum ve üstüne kurulum sınaması
+        run: |
+          $setup = 'installer\output\FalcrebCloudBackup-Setup.exe'
+          $exe = "$env:ProgramFiles\FalcrebCloudBackup\FalcrebCloudBackup.App.exe"
+          $marker = "$env:ProgramData\FalcrebCloudBackup\ci-marker.txt"
+          $setupArgs = '/VERYSILENT', '/SUPPRESSMSGBOXES', '/NORESTART', '/CLOSEAPPLICATIONS'
+          $p = Start-Process $setup -ArgumentList $setupArgs -Wait -PassThru
+          if ($p.ExitCode -ne 0) { throw "İlk kurulum başarısız: $($p.ExitCode)" }
+          if (-not (Test-Path $exe)) { throw 'Uygulama kurulmadı' }
+          Start-Sleep -Seconds 10
+          if (-not (Get-Process FalcrebCloudBackup.App -ErrorAction SilentlyContinue)) { throw 'Uygulama kurulumdan sonra açılmadı' }
+          New-Item -ItemType Directory -Force (Split-Path $marker) | Out-Null
+          Set-Content $marker 'kept'
+          # Güncellemenin aynısı: uygulama açıkken üstüne kurulur, veriler korunur.
+          $p = Start-Process $setup -ArgumentList $setupArgs -Wait -PassThru
+          if ($p.ExitCode -ne 0) { throw "Üstüne kurulum başarısız: $($p.ExitCode)" }
+          if ((Get-Content $marker) -ne 'kept') { throw 'Veri korunmadı' }
+          $found = (Get-Item $exe).VersionInfo.ProductVersion
+          if (-not $found.StartsWith($env:VERSION)) { throw "Kurulan sürüm yanlış: $found" }
+          Get-Process FalcrebCloudBackup.App -ErrorAction SilentlyContinue | Stop-Process -Force
+
+      - name: Yayımla
+        if: github.ref_type == 'tag'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          Set-Location installer\output
+          Get-FileHash FalcrebCloudBackup-Setup.exe -Algorithm SHA256 | ForEach-Object { "$($_.Hash.ToLower())  FalcrebCloudBackup-Setup.exe" } | Out-File SHA256SUMS.txt -Encoding ascii
+          gh release create $env:GITHUB_REF_NAME FalcrebCloudBackup-Setup.exe update.json SHA256SUMS.txt --generate-notes --verify-tag

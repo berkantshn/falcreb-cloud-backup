@@ -3,7 +3,10 @@
 ; Çıktı: installer\output\FalcrebCloudBackup-Setup.exe
 
 #define MyAppName "FalcrebCloudBackup"
-#define MyAppVersion "1.4.0"
+; Yayın hattı sürümü /DMyAppVersion=... ile tag'den verir.
+#ifndef MyAppVersion
+  #define MyAppVersion "1.5.0"
+#endif
 #define MyAppPublisher "FALCREB"
 #define MyAppExeName "FalcrebCloudBackup.App.exe"
 #define MySourceDir "..\src\FalcrebCloudBackup.App\bin\Release\net48"
@@ -26,6 +29,9 @@ WizardStyle=modern
 ; Uygulamanın kendisi zaten yönetici hakkı istiyor (Task Scheduler kaydı için) —
 ; kurulum da aynı seviyede çalışmalı, aksi halde Program Files'a yazamaz.
 PrivilegesRequired=admin
+; Güncellemede çalışan uygulama kapatılır; yeniden açma işini [Run] bölümü yapar.
+CloseApplications=yes
+RestartApplications=no
 ArchitecturesInstallIn64BitMode=x64compatible
 
 [Languages]
@@ -49,4 +55,8 @@ Name: "{autodesktop}\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}"; Tasks: de
 ; yönetici olarak çalışırken bir alt işlemi UAC istemi olmadan CreateProcess ile başlatamıyor
 ; (kod 740). Kısayoldan (Başlat menüsü/masaüstü) çift tıklandığında bu sorun olmuyor, çünkü
 ; Explorer o çağrıyı ShellExecute ile yapıyor ve UAC istemini kendisi düzgün tetikliyor —
-; bu yüzden kurulum sonrası otomatik başlatma adımı kasıtlı olarak yok.
+; bu yüzden kurulum sonrası başlatma ShellExecute (shellexec) ile yapılır ve yalnızca sessiz
+; kurulumda, yani uygulama içinden gelen güncellemede çalışır.
+
+[Run]
+Filename: "{app}\{#MyAppExeName}"; Flags: nowait shellexec; Check: WizardSilent

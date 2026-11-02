@@ -100,6 +100,7 @@ namespace FalcrebCloudBackup.App
             LanguageCombo.SelectedItem = LanguageCombo.Items.OfType<System.Windows.Controls.ComboBoxItem>().First(i => (string)i.Tag == Loc.Current);
 
             AutoStartCheckBox.IsChecked = _coordinator.IsAutoStartEnabled();
+            InitializeUpdates();
             _isInitializing = false;
 
             // Sessiz (gece) yedeklemeler ayrı bir işlemde çalışıp jobs.json'ı günceller; açık duran
@@ -793,6 +794,7 @@ namespace FalcrebCloudBackup.App
                 _refreshTimer.Stop();
                 _healthTimer.Stop();
                 _lockTimer.Stop();
+                _updateTimer?.Stop();
                 _coordinator.Dispose();
                 return;
             }
