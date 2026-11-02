@@ -4,6 +4,10 @@ Bu proje [Keep a Changelog](https://keepachangelog.com/tr/1.1.0/) formatını ta
 
 ## [Unreleased]
 
+### Doğrulananlar
+- "Kur" bağlantısı v1.5.0'dan v1.5.1'e gerçek bir güncellemede, sahte verilerle GitHub'ın geçici Windows makinesinde sınandı; görevler, ayarlar ve zamanlanmış görevler korundu, oynanmış güncelleme reddedildi.
+- Ana penceredeki güncelleme onay kutusunun görünümü İngilizce/Türkçe, açık/koyu temada denetlendi.
+
 ## [1.5.1] - 2026-11-02
 
 ### Düzeltilenler
