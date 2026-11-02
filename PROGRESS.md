@@ -2,6 +2,26 @@
 
 ### [2026-11-02 - bilgisayar adı public repoda yazılmadı]
 - **Yapılanlar & Kararlar:**
+  - v1.5.1 imzalı olarak yayınlandı (küçük düzeltme: `check-live` yönetici olmayan kabukta anlaşılır hata veriyor).
+  - "Kur" bağlantısı gerçek bir güncellemede denendi ve çalıştı: GitHub'ın geçici Windows makinesinde v1.5.0 kuruldu, sahte verilerle açıldı, bağlantıya gerçek fare ile tıklandı, PIN girildi, uygulama v1.5.1 olarak kendiliğinden yeniden açıldı (Türkçe/açık ve İngilizce/koyu).
+  - Görevler, arayüz ayarları, bildirim ayarları, kota kaydı ve PIN dosyası bayt bayt aynı kaldı; zamanlanmış görevlerin XML kayıtları değişmedi; uygulama logunda hata yok.
+  - Windows'un varsayılan UAC ayarıyla da güncelleme zincirinde onay penceresi çıkmadı.
+  - Oynanmış güncelleme reddedildi: bozulan her alan, başka anahtarla imza, özeti tutmayan ve beklenenden büyük dosya. Özel anahtar kullanılmadı.
+  - Onay kutusu dört dil/tema birleşiminde ve en küçük pencerede temiz görünüyor; kapalıyken 3 dakikada bildirim çıkmadı.
+  - Test koşusu: https://github.com/berkantshn/falcreb-cloud-backup/actions/runs/41424994013 — betikler main'e alınmadı, `test/e2e-update` branch'inde duruyor.
+- **Son Commit:** 28fe783 Merge pull request #5 from berkantshn/chore/release-1-5-1
+- **Aktif Branch:** main
+- **Sıradaki İlk İş (Next Action):** `test/e2e-update` branch'ini silme kararını ver (merge edilmedi, onay gerekiyor). Ardından gerçek Google/OneDrive girişi ve yüklemeyi dene.
+- **Bilinen Sorunlar / Dikkat Edilmesi Gerekenler:**
+  - Test CI makinesinde yapıldı: oturum baştan yönetici, UAC onayını gören gerçek bir kullanıcı yok, gerçek bulut hesabı yok, ekran 1024x768.
+  - İndirilen kurulum dosyası (yaklaşık 4 MB) `%ProgramData%\FalcrebCloudBackup\updates` altında bir sonraki güncellemeye kadar kalıyor.
+  - Kutu kapalıyken uygulama açılıp sonra kutu açılırsa denetim hemen yapılmıyor; bir sonraki günlük denetimi veya yeniden açılışı bekliyor (koddan görüldü, çalışırken denenmedi).
+  - En küçük pencerede (800x520), sorun şeridi ve bildirim görünürken görev listesi tek satırın altına iniyor; kaydırılabiliyor, taşma yok.
+  - "Yedekleme sürerken güncelleme" uyarısı bu testte denenmedi.
+  - Gerçek Google/OneDrive girişi, yükleme ve zamanlanmış çalışma henüz denenmedi. Kurulum dosyasında Authenticode kod imzası yok.
+
+### [2026-11-02 - bilgisayar adı public repoda yazılmadı]
+- **Yapılanlar & Kararlar:**
   - v1.5.0 imzalı olarak yayınlandı; testler, kurulum dosyası, imzalama ve sessiz kurulum sınaması GitHub Actions'ta geçti.
   - Yayındaki dosyanın SHA-256 özeti `SHA256SUMS.txt` ile eşleşti.
   - İmzalama anahtarı GitHub secret'ı oldu; açık değeri repoda yok.
