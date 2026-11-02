@@ -57,6 +57,8 @@ Name: "{autodesktop}\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}"; Tasks: de
 ; Explorer o çağrıyı ShellExecute ile yapıyor ve UAC istemini kendisi düzgün tetikliyor —
 ; bu yüzden kurulum sonrası başlatma ShellExecute (shellexec) ile yapılır ve yalnızca sessiz
 ; kurulumda, yani uygulama içinden gelen güncellemede çalışır.
+; Kurulum başarısız olursa bu satır çalışmaz; uygulamayı güncellemeyi başlatan cmd.exe yeniden açar
+; (bkz. VerifiedInstaller.Start).
 
 [Run]
 Filename: "{app}\{#MyAppExeName}"; Flags: nowait shellexec; Check: WizardSilent

@@ -8,6 +8,7 @@ using System.Windows.Threading;
 using FalcrebCloudBackup.App.Services;
 using FalcrebCloudBackup.Core.Localization;
 using FalcrebCloudBackup.Core.Logging;
+using FalcrebCloudBackup.Core.Storage;
 using FalcrebCloudBackup.Core.Updates;
 
 namespace FalcrebCloudBackup.App
@@ -29,6 +30,7 @@ namespace FalcrebCloudBackup.App
         private void InitializeUpdates()
         {
             UpdateCheckCheckBox.IsChecked = UiSettingsStore.Load().CheckForUpdates;
+            ReportFailedUpdate();
             _updateTimer = new DispatcherTimer { Interval = FirstUpdateCheckDelay };
             _updateTimer.Tick += async (s, e) =>
             {
@@ -50,7 +52,10 @@ namespace FalcrebCloudBackup.App
                 using (var cts = new CancellationTokenSource(TimeSpan.FromMinutes(1)))
                 {
                     var current = Assembly.GetExecutingAssembly().GetName().Version;
-                    _availableUpdate = await _updateClient.CheckAsync(current, cts.Token);
+                    var found = await _updateClient.CheckAsync(current, cts.Token);
+
+                    // Denetim sürerken kutu kapatıldıysa sonuç gösterilmez.
+                    _availableUpdate = UpdateCheckCheckBox.IsChecked == true ? found : null;
                 }
 
                 ShowUpdateNotice();
@@ -74,7 +79,7 @@ namespace FalcrebCloudBackup.App
             UpdateNotice.Visibility = Visibility.Visible;
         }
 
-        private void OnUpdateCheckChanged(object sender, RoutedEventArgs e)
+        private async void OnUpdateCheckChanged(object sender, RoutedEventArgs e)
         {
             if (_isInitializing)
             {
@@ -96,7 +101,64 @@ namespace FalcrebCloudBackup.App
             {
                 _availableUpdate = null;
                 ShowUpdateNotice();
+                return;
             }
+
+            // Kutu yeniden açıldı: günlük denetimi beklemeden hemen bak. Hatalar içeride loglanır, dışarı çıkmaz.
+            await CheckForUpdateAsync();
+        }
+
+        /// <summary>Kayıt yazılamazsa güncelleme yine de denenir; kurulum başarısız olursa cmd.exe bildirmeye devam eder.</summary>
+        private static void RecordUpdateAttempt(string version)
+        {
+            try
+            {
+                new UpdateAttemptStore().Begin(version);
+            }
+            catch (Exception ex)
+            {
+                AppLog.Warn(Loc.T("Log_UpdateAttemptStoreFailed", ex.Message));
+            }
+        }
+
+        private static void ClearUpdateAttempt()
+        {
+            try
+            {
+                new UpdateAttemptStore().Clear();
+            }
+            catch (Exception ex)
+            {
+                AppLog.Warn(Loc.T("Log_UpdateAttemptStoreFailed", ex.Message));
+            }
+        }
+
+        /// <summary>Son güncelleme kurulamadıysa bunu bir kez, pencere çizildikten sonra söyler.</summary>
+        private void ReportFailedUpdate()
+        {
+            bool failed;
+            try
+            {
+                failed = new UpdateAttemptStore().ConsumeFailure(
+                    Assembly.GetExecutingAssembly().GetName().Version,
+                    Environment.GetCommandLineArgs().Contains(UpdateAttemptStore.FailedArgument));
+            }
+            catch (Exception ex)
+            {
+                AppLog.Warn(Loc.T("Log_UpdateAttemptStoreFailed", ex.Message));
+                return;
+            }
+
+            if (!failed)
+            {
+                return;
+            }
+
+            var version = Assembly.GetExecutingAssembly().GetName().Version.ToString(3);
+            var log = System.IO.Path.Combine(AppPaths.LogsDirectory, "update-install.log");
+            AppLog.Error(Loc.T("Log_UpdateFailedAfterRestart", version));
+            Dispatcher.BeginInvoke(DispatcherPriority.ApplicationIdle, new Action(() =>
+                MessageBox.Show(this, Loc.T("Update_FailedAfterRestart", version, log), Loc.T("Common_Warning"), MessageBoxButton.OK, MessageBoxImage.Warning)));
         }
 
         /// <summary>Bu kopya dışında çalışan süreç: Görev Zamanlayıcı'nın başlattığı sessiz yedeklemedir.</summary>
@@ -155,12 +217,14 @@ namespace FalcrebCloudBackup.App
                 }
 
                 AppLog.Info(Loc.T("Log_UpdateInstalling", update.Version));
-                installer.Start();
+                RecordUpdateAttempt(update.Version);
+                installer.Start(Assembly.GetExecutingAssembly().Location);
                 _isExiting = true;
                 Application.Current.Shutdown();
             }
             catch (Exception ex)
             {
+                ClearUpdateAttempt();
                 AppLog.Error(Loc.T("Log_UpdateFailed"), ex);
                 MessageBox.Show(this, Loc.T("Update_Failed", ex.Message), Loc.T("Common_Warning"), MessageBoxButton.OK, MessageBoxImage.Warning);
             }

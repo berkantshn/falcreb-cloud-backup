@@ -76,6 +76,18 @@ namespace FalcrebCloudBackup.App
             // exactly what happened in the field: several "Uygulama başlatıldı" log lines in a
             // row with no matching exit meant several copies were watching the same folder.
             _singleInstanceMutex = new Mutex(true, SingleInstanceMutexName, out var isFirstInstance);
+            if (!isFirstInstance && e.Args.Contains(FalcrebCloudBackup.Core.Updates.UpdateAttemptStore.FailedArgument))
+            {
+                // Kurulum çok çabuk başarısız olursa eski kopya henüz kapanıyor olabilir: onu bekle.
+                isFirstInstance = WaitForOtherInstanceToExit();
+                if (!isFirstInstance)
+                {
+                    // Başka bir kopya zaten açık, kullanıcının önünde pencere var: ikinci uyarı gereksiz.
+                    Shutdown();
+                    return;
+                }
+            }
+
             if (!isFirstInstance)
             {
                 AppLog.Warn(Loc.T("Log_SecondInstanceBlocked"));
@@ -113,6 +125,19 @@ namespace FalcrebCloudBackup.App
             }
 
             new MainWindow().Show();
+        }
+
+        private bool WaitForOtherInstanceToExit()
+        {
+            try
+            {
+                return _singleInstanceMutex.WaitOne(TimeSpan.FromSeconds(30));
+            }
+            catch (AbandonedMutexException)
+            {
+                // Eski kopya beklenmedik şekilde kapanmış; kilit artık bu kopyanın.
+                return true;
+            }
         }
 
         protected override void OnExit(ExitEventArgs e)

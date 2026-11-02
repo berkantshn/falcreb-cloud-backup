@@ -4,6 +4,11 @@ Bu proje [Keep a Changelog](https://keepachangelog.com/tr/1.1.0/) formatını ta
 
 ## [Unreleased]
 
+### Düzeltilenler
+- "Kur" ile başlatılan kurulum başarısız olursa veya hiç başlamazsa uygulama artık kendiliğinden yeniden açılıyor ve bir kez, log dosyasını gösteren bir uyarı veriyor.
+- Güncelleme denetimi kutusu yeniden açıldığında denetim günlük sırayı beklemeden hemen yapılıyor.
+- Sürüm hattındaki kurulum sınaması artık kurulum logu tutuyor, başarısızlıkta logları saklıyor ve sabit süre yerine uygulamanın hazır olmasını bekliyor.
+
 ### Doğrulananlar
 - "Kur" bağlantısı v1.5.0'dan v1.5.1'e gerçek bir güncellemede, sahte verilerle GitHub'ın geçici Windows makinesinde sınandı; görevler, ayarlar ve zamanlanmış görevler korundu, oynanmış güncelleme reddedildi.
 - Ana penceredeki güncelleme onay kutusunun görünümü İngilizce/Türkçe, açık/koyu temada denetlendi.
