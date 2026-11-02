@@ -13,6 +13,8 @@
 - **Aktif Branch:** main
 - **Sıradaki İlk İş (Next Action):** `test/e2e-update` branch'ini silme kararını ver (merge edilmedi, onay gerekiyor). Ardından gerçek Google/OneDrive girişi ve yüklemeyi dene.
 - **Bilinen Sorunlar / Dikkat Edilmesi Gerekenler:**
+  - Sürüm hattındaki "üstüne kurulum sınaması" aralıklı başarısız oluyor: bu dokümantasyon PR'ında 3 denemenin 2'sinde kurulum kod 5 ile çıktı, üçüncüsü geçti. Başarısız denemelerde makine belirgin yavaştı; sebep kanıtlanmadı çünkü o adım kurulum logu tutmuyor. Aynı adımlar loglu olarak 3 kez, yayındaki kurulum dosyası açık uygulamanın üstüne 16 kez sorunsuz çalıştı. Bir sürüm etiketinde tekrarlanırsa yayın durur, hiçbir şey yayımlanmaz; öneri: adıma `/LOG` eklemek ve pencerenin açılmasını beklemek.
+  - Sessiz kurulum "Kur" sırasında bir sebeple başarısız olursa uygulama çoktan kapanmış olur ve kendiliğinden açılmaz; iz yalnızca `update-install.log` dosyasında kalır (koddan görüldü, testlerde yaşanmadı).
   - Test CI makinesinde yapıldı: oturum baştan yönetici, UAC onayını gören gerçek bir kullanıcı yok, gerçek bulut hesabı yok, ekran 1024x768.
   - İndirilen kurulum dosyası (yaklaşık 4 MB) `%ProgramData%\FalcrebCloudBackup\updates` altında bir sonraki güncellemeye kadar kalıyor.
   - Kutu kapalıyken uygulama açılıp sonra kutu açılırsa denetim hemen yapılmıyor; bir sonraki günlük denetimi veya yeniden açılışı bekliyor (koddan görüldü, çalışırken denenmedi).
