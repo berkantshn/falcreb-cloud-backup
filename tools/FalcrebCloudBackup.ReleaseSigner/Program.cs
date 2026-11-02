@@ -1,6 +1,7 @@
 using System;
 using System.IO;
 using System.Net;
+using System.Security.Principal;
 using System.Threading;
 using FalcrebCloudBackup.Core.Updates;
 using Newtonsoft.Json;
@@ -101,8 +102,24 @@ namespace FalcrebCloudBackup.ReleaseSigner
             return 0;
         }
 
+        private static bool IsElevated()
+        {
+            using (var identity = WindowsIdentity.GetCurrent())
+            {
+                return new WindowsPrincipal(identity).IsInRole(WindowsBuiltInRole.Administrator);
+            }
+        }
+
         private static int CheckLive(string currentVersion)
         {
+            // İndirme klasörüne yalnızca yöneticiler yazabilir. Baştan sorulur: yetkisiz denemede
+            // anlaşılmaz bir erişim hatası çıkmasın ve geride boş klasör kalmasın.
+            if (!IsElevated())
+            {
+                Console.Error.WriteLine("ERROR: check-live needs an elevated shell (Run as administrator). Nothing was downloaded.");
+                return 1;
+            }
+
             var client = new UpdateClient();
             var manifest = client.CheckAsync(Version.Parse(currentVersion), CancellationToken.None).GetAwaiter().GetResult();
             if (manifest == null)

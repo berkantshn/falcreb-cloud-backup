@@ -4,6 +4,11 @@ Bu proje [Keep a Changelog](https://keepachangelog.com/tr/1.1.0/) formatını ta
 
 ## [Unreleased]
 
+## [1.5.1] - 2026-11-02
+
+### Düzeltilenler
+- Sürüm denetim aracı (`check-live`) yönetici olmayan bir kabukta artık hiçbir şey indirmeden anlaşılır bir hata veriyor; geride boş klasör bırakmıyor.
+
 ### Eklenenler
 - Sürüm durumu ve doğrulanmamış işlerin planı `PROGRESS.md` dosyasına yazıldı.
 
