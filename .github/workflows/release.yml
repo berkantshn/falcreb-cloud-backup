@@ -54,7 +54,14 @@ jobs:
           $exe = "$env:ProgramFiles\FalcrebCloudBackup\FalcrebCloudBackup.App.exe"
           $marker = "$env:ProgramData\FalcrebCloudBackup\ci-marker.txt"
           $setupArgs = '/VERYSILENT', '/SUPPRESSMSGBOXES', '/NORESTART', '/CLOSEAPPLICATIONS'
-          $p = Start-Process $setup -ArgumentList $setupArgs -Wait -PassThru
+          # Start-Process -Wait, kurulumun açtığı uygulama kapanana kadar da bekler; yalnızca kurulumu bekle.
+          function Install-Silently {
+            $process = Start-Process $setup -ArgumentList $setupArgs -PassThru
+            $null = $process.Handle
+            if (-not $process.WaitForExit(300000)) { throw 'Kurulum 5 dakikada bitmedi' }
+            $process
+          }
+          $p = Install-Silently
           if ($p.ExitCode -ne 0) { throw "İlk kurulum başarısız: $($p.ExitCode)" }
           if (-not (Test-Path $exe)) { throw 'Uygulama kurulmadı' }
           Start-Sleep -Seconds 10
@@ -62,7 +69,7 @@ jobs:
           New-Item -ItemType Directory -Force (Split-Path $marker) | Out-Null
           Set-Content $marker 'kept'
           # Güncellemenin aynısı: uygulama açıkken üstüne kurulur, veriler korunur.
-          $p = Start-Process $setup -ArgumentList $setupArgs -Wait -PassThru
+          $p = Install-Silently
           if ($p.ExitCode -ne 0) { throw "Üstüne kurulum başarısız: $($p.ExitCode)" }
           if ((Get-Content $marker) -ne 'kept') { throw 'Veri korunmadı' }
           $found = (Get-Item $exe).VersionInfo.ProductVersion
